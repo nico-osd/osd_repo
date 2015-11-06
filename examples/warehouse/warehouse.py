@@ -2,8 +2,8 @@
 
 
 from __future__ import print_function
+
 import Pyro4
-import person
 
 
 class Warehouse(object):
