@@ -28,7 +28,7 @@ def main():
         {
             warehouse: "example.warehouse"
         },
-        ns=False)
+        ns=True)
 
 
 if __name__ == "__main__":
