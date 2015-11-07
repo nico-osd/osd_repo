@@ -1,5 +1,7 @@
 #! /usr/bin/python3
 
+from __future__ import print_function
+
 
 class Aggregator(object):
     def __init__(self):
@@ -7,23 +9,23 @@ class Aggregator(object):
         initializes attributes
         """
         # Dictionary of current viewers of this aggregator
-        self.viewers = {}
+        self._viewers = {}
         # List of symbols for this aggregator
-        self.symbols = []
+        self._symbols = []
 
     def add_symbols(self, symbols):
         """
         Add the symbols to the attribute
         :param symbols: a List of symbols to append to the attribute
         """
-        self.symbols.extend(symbols)
+        self._symbols.extend(symbols)
 
     def available_symbols(self):
         """
         returns the symbols attribute
         :return: None
         """
-        return self.symbols
+        return self._symbols
 
     def view(self, viewer, symbols):
         """
@@ -31,7 +33,8 @@ class Aggregator(object):
         :param viewer: the viewer of this aggregator
         :param symbols: the symbols which the viewer wants to view
         """
-        self.viewers[viewer] = symbols
+        print("aggregator gets a new viewer, for symbols: ", symbols)
+        self._viewers[viewer] = symbols
 
     def quotes(self, market, stockquotes):
         """
@@ -46,9 +49,25 @@ class Aggregator(object):
             # iterate over all viewers and set the
             # current key -> viewer
             # current value -> symbols of the viewer
-            for viewer, symbols in self.viewers.items():
+            for viewer, symbols in self._viewers.items():
                 # has the viewer subscribed to the the current symbol (of the stockquote)
                 # falls sich das symbol aus dem Stockquote in den Symbolen des Viewers befindet
                 if symbol in symbols:
                     # print the value of the symbol at the market.
                     viewer.quote(market, symbol, value)
+
+
+def main(stockmarkets):
+    """
+    Add symbols to aggragator and register as listener at stockmarket.
+    :param stockmarkets: available stockmarkets
+    :return: aggregator - The freshly created aggregator for the given stockmarkets.
+    """
+    aggregator = Aggregator()
+    for market in stockmarkets:
+        aggregator.add_symbols(market.symbols())
+        market.listener(aggregator)
+    if not aggregator.available_symbols():
+        raise ValueError("no symbols found!")
+    print("aggregated symbols:", aggregator.available_symbols())
+    return aggregator
