@@ -12,3 +12,15 @@ class Viewer(object):
         :param value: the current value of the quote
         """
         print("{0}.{1}: {2}".format(market, symbol, value))
+
+
+def main(aggregator):
+    """
+    Register a new viewer at the aggregator.
+    :param aggregator: The aggregator to register this viewer.
+    :return: viewer - The freshly created viewer object for the symbols.
+    """
+    viewer = Viewer()
+    symbols = ["BP", "HPQ", "MSFT", "GOOG"]
+    aggregator.view(viewer, symbols)
+    return viewer
