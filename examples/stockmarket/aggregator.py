@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
 from __future__ import print_function
+import Pyro4
 
 
 class Aggregator(object):
@@ -57,17 +58,45 @@ class Aggregator(object):
                     viewer.quote(market, symbol, value)
 
 
-def main(stockmarkets):
+def main():
     """
     Add symbols to aggragator and register as listener at stockmarket.
     :param stockmarkets: available stockmarkets
     :return: aggregator - The freshly created aggregator for the given stockmarkets.
     """
+
+    # create an aggregator object
     aggregator = Aggregator()
-    for market in stockmarkets:
-        aggregator.add_symbols(market.symbols())
-        market.listener(aggregator)
+
+    # create a pyro4 daemon to register aggregator object and get the uri
+    daemon = Pyro4.Daemon()
+
+    # register aggregator object and get object uri
+    agg_uri = daemon.register(aggregator)
+
+    # locate nameserver to register aggregator object at name server
+    ns = Pyro4.locateNS()
+
+    # register object at nameserver with a given name and an id (uri)
+    ns.register("examples.stockmarket.aggregator", agg_uri, safe=True)
+
+    # get all registered stockmarkets from the name server
+    # to get a dict of all "object -> uri" pairs a prefix of the objects
+    # is needed.
+    for market, market_uri in ns.list(prefix="example.stockmarket.").items():
+        print("subscribing to market ", market)
+        # create Proxy object of stockmarket with the given uri
+        stockmarket = Pyro4.Proxy(market_uri)
+        # register aggregator at stockmarket
+        stockmarket.listener(aggregator)
+        # append symbols to aggregator
+        aggregator.add_symbols(stockmarket.symbols())
+    # we did not find any market if there are no symbols.
     if not aggregator.available_symbols():
-        raise ValueError("no symbols found!")
-    print("aggregated symbols:", aggregator.available_symbols())
-    return aggregator
+        raise ValueError("no symbols found! (Are StockMarkets up and running?")
+
+    print("Aggregator running! Symbols:", aggregator.available_symbols())
+    daemon.requestLoop()
+
+if __name__ == '__main__':
+    main()

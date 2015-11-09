@@ -4,7 +4,7 @@ from __future__ import print_function
 import random
 import threading
 import time
-
+import Pyro4
 
 class StockMarket(object):
     def __init__(self, marketname, symbols):
@@ -44,7 +44,9 @@ class StockMarket(object):
         Return the symbols of this stockmarket.
         :return: The symbols of this particular stockmarket.
         """
-        return self._symbolmeans.keys()
+        # We need to serialize objects and _symbolemeans.keys() gives us an iterator
+        # so we need a list to explicitly serialize these keys.
+        return list(self._symbolmeans.keys())
 
     def run(self):
         """
@@ -71,6 +73,23 @@ def main():
     symbols = ["IBM", "HPQ", "BP"]
     newyork = StockMarket("NYSE", symbols)
 
+    # Create Pyro Daemon and register stockmarket objects to get the uri
+    daemon = Pyro4.Daemon()
+    nasdaq_uri = daemon.register(nasdaq)
+    newyork_uri = daemon.register(newyork)
+
+    # We need to locate the Name Server and register our objects.
+    ns = Pyro4.locateNS()
+    ns.register("example.stockmarket.nasdaq", nasdaq_uri)
+    ns.register("example.stockmarket.newyork", newyork_uri)
+
+    # run the stockmarkets and create a requestLoop.
     nasdaq.run()
     newyork.run()
-    return [nasdaq, newyork]
+    print("Stockmarkets are now online.")
+    daemon.requestLoop()
+
+
+
+if __name__ == '__main__':
+    main()
