@@ -15,4 +15,4 @@ installiere serpent (Abh. v. Pyro4):
 
 
 installiere pyro4: 
-`$ sudo pip3 install serpent`
+`$ sudo pip3 install pyro4`
