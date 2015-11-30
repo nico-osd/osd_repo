@@ -49,7 +49,7 @@ Prinzipiell ist dies eine Diskussionbasis und nicht in Stein gemeisselt.
 
 ## 14.01.15:
 
-- [ ] Implementierung ist 
+- [ ] Implementierung reagiert "angemessen" in den Tests (definition of done?)
 
 # Dependencies
 
