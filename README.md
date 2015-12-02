@@ -23,6 +23,8 @@ Darauf aufbauend:
 - Master fällt aus, neue Master election
 - Pis und Master fallen während der Ausführung von Aufgaben aus
 
+siehe auch [issue #2](https://github.com/nico-osd/osd_repo/issues/2#issuecomment-161434557)
+
 # Roadmap
 
 Prinzipiell ist dies eine Diskussionbasis und nicht in Stein gemeisselt.
@@ -32,7 +34,7 @@ Prinzipiell ist dies eine Diskussionbasis und nicht in Stein gemeisselt.
 
 | Gruppe                                           | ToDo                                           |
 | ------------------------------------------------ | ---------------------------------------------- |
-| 1      | Raspis führen eine Liste von anderen Raspis im Netzwerk (siehe big picture)              |
+| 1      | Raspis führen eine Liste von anderen Raspis im Netzwerk (siehe [issue #2](https://github.com/nico-osd/osd_repo/issues/2#issuecomment-161434557))              |
 | 2      | Prototyp Implementierung in (Pseudo-) Code oder Programmiersprache eurer Wahl            |
 | 3 & 4  | Pyro4 Aufruf von Remote-Methoden ohne NameServer möglich                                 |
 
