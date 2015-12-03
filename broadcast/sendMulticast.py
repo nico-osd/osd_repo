@@ -11,7 +11,7 @@ multicast_group = ("224.0.0.1", 10000)
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Set a timeout so the socket does not block indefinitely when trying
-# to receive data.
+# to receive data.#
 sock.settimeout(1)
 
 # Set the time-to-live for messages to 1 so they do not go past the
