@@ -4,13 +4,14 @@
 import sys
 
 import Pyro4
-import Pyro4.util
 
 from examples.warehouse.person import Person
 
-sys.excepthook = Pyro4.util.excepthook
+if sys.version_info < (3, 0):
+    input = raw_input
 
-warehouse = Pyro4.Proxy("PYRONAME:example.warehouse")
+uri = input("Enter the uri of the warehouse: ").strip()
+warehouse = Pyro4.Proxy(uri)
 janet = Person("Janet")
 henry = Person("Henry")
 janet.visit(warehouse)
