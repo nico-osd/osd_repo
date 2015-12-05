@@ -9,6 +9,10 @@ NETWORK = "10.20.0."
 
 
 def main():
+    """
+    This main method is only for testing purpose and is going to be removed in the future.
+    It generates list items and prints them to console.
+    """
     handler = ListHandler()
     is_master_elected = False
 
@@ -17,6 +21,8 @@ def main():
         ip = NETWORK + str(random.randrange(1, 255))
         if not is_master_elected:
             is_master = True if random.random() > 0.5 else False
+            if is_master:
+                is_master_elected = True
         else:
             is_master = False
 
@@ -28,13 +34,13 @@ def main():
 
         # creating entry
 
-        entry = Entry(is_master, name, "", timestamp)
+        entry = Entry(is_master, name, "", timestamp) if random.random() < 0.7 else Entry()
 
         # adding entry
 
         handler.add_or_override_entry(ip, entry)
 
-        print("Generated Entry.")
+        print("Generated Entry #{}".format(i))
 
     # print as json
 

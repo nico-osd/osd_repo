@@ -6,13 +6,13 @@ from json import JSONEncoder
 class ListHandler(object):
     def __init__(self):
         """
-        constructs the dict, held within this class
+        shall constructs the dict, held within this class
         """
         self._dict = {}
 
     def add_or_override_entry(self, ip="127.0.0.1", entry=object()):
         """
-        adds or overrides the key (ip) with the given value (entry) to the dict.
+        shall add or override the key (ip) with the given value (entry).
         :param ip: the ip of the host
         :param entry: the entry for the host
         """
@@ -20,7 +20,7 @@ class ListHandler(object):
 
     def rmv_entry(self, ip):
         """
-        removes a given entry and returns the value which was attached to it.
+        shall remove a given entry and return the value which was attached to it.
         :param ip: the key of the key-value pair to remove
         :return: the value which was attached to the key
         """
@@ -28,7 +28,7 @@ class ListHandler(object):
 
     def get_entry(self, ip):
         """
-        returns the value of the given key
+        shall return the value of the given key
         :param ip: the key
         :return: the value attached to the given key.
         """
@@ -36,7 +36,7 @@ class ListHandler(object):
 
     def get_dict(self):
         """
-        will be removed as it is only for testing.
+        this method will be removed as it is only for testing.
         :return: dict.
         """
         return self._dict
