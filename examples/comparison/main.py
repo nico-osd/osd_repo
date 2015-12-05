@@ -4,7 +4,7 @@ import json
 import random
 import time
 
-from examples.comparison.listhandler import ListHandler, Entry, EntryEncoder
+from util.listhandler import ListHandler, Entry, EntryEncoder
 
 NETWORK = "10.20.0."
 
@@ -20,17 +20,26 @@ def main():
     for i in range(random.randrange(5, 10)):
         # constructing entry parameters with some randomness
         ip = NETWORK + str(random.randrange(1, 255))
+
+        # if there is no master
         if not is_master_elected:
             is_master = True if random.random() > 0.5 else False
+
+            # if randomness selects this as master, set the flag.
             if is_master:
                 is_master_elected = True
+
+        # flag is set = there is already a master.
         else:
             is_master = False
 
+        # just a placeholder
         name = "ip_" + str(ip)
 
+        # executing this script has to be a pain.
         time.sleep(random.randrange(0, 3))
 
+        # set timestamp
         timestamp = int(time.time())
 
         # creating entry
