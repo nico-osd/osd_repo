@@ -12,8 +12,16 @@ NETWORK = "10.20.0."
 def main():
     """
     This main method is only for testing purpose and is going to be removed in the future.
-    It generates list items and prints them to console.
+    It prints the generated dict to console.
     """
+    handler = generate()
+
+    # print as json
+
+    print(json.dumps(handler.get_dict(), sort_keys=True, indent=4, cls=EntryEncoder))
+
+
+def generate():
     handler = ListHandler()
     is_master_elected = False
 
@@ -52,9 +60,7 @@ def main():
 
         print("Generated Entry #{}".format(i))
 
-    # print as json
-
-    print(json.dumps(handler.get_dict(), sort_keys=True, indent=4, cls=EntryEncoder))
+    return handler
 
 
 if __name__ == '__main__':
