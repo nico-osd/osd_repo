@@ -1,10 +1,7 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 
-# this is for testing only, the real dicts will be supplied by other sources
-
-import time
-import datetime
+# The real implementation can be found in util/listhandler.py
 
 class MyList(object):
     def __init__(self):

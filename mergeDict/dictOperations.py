@@ -1,15 +1,20 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 #from mergeDict.myDict import MyList
 
-import time
 import datetime
+import time
 
-
-
+from examples.comparison.main import generate
 
 # zuerst einmal nicht objektorinitiert
 # 2 listen generieren
+
+
+# das ist die Liste, wie sie aussehen wird
+# bitte verwende diese
+# by: Nico
+rl_list = generate()
 
 liste1 = dict()
 liste2 = dict()
