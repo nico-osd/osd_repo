@@ -1,9 +1,10 @@
 #! /usr/bin/python3
 
-from comparison.listhandler import ListHandler, Entry, EntryEncoder
+import json
 import random
 import time
-import json
+
+from examples.comparison.listhandler import ListHandler, Entry, EntryEncoder
 
 NETWORK = "10.20.0."
 
