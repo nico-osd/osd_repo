@@ -15,4 +15,3 @@ class Action(object):
 
     def action(self):
         return self._action
-
