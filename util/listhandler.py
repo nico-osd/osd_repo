@@ -1,12 +1,12 @@
 #! /usr/bin/python3
 
-from json import JSONEncoder
+from json import JSONEncoder, dumps
 
 
 class ListHandler(object):
     def __init__(self):
         """
-        shall constructs the dict, held within this class
+        shall construct the dict, held within this class
         """
         self._dict = {}
 
@@ -16,7 +16,10 @@ class ListHandler(object):
         :param ip: the ip of the host
         :param entry: the entry for the host
         """
-        self._dict[ip] = entry
+        if isinstance(entry, Entry):
+            self._dict[ip] = entry
+        else:
+            raise TypeError
 
     def rmv_entry(self, ip):
         """
@@ -34,47 +37,53 @@ class ListHandler(object):
         """
         return self._dict.get(ip)
 
-    def get_dict(self):
-        """
-        this method will be removed as it is only for testing.
-        :return: dict.
-        """
-        return self._dict
+    def to_json(self):
+        to_dump = self._dict.copy()
+        return dumps(to_dump, sort_keys=True, indent=4, cls=EntryEncoder)
 
 
 class Entry(object):
-    def __init__(self, isMaster=None, name="", pyro_uri="", timestamp=-1):
-        self._isMaster = isMaster
+    def __init__(self, is_master=None, name="", pyro_uri="", last_time_active=-1):
+        self._is_master = is_master
         self._name = name
         self._pyro_uri = pyro_uri
-        self._last_time_active = timestamp
+        self._last_time_active = last_time_active
 
-    def set_is_master(self, isMaster=False):
-        if not self._isMaster:
-            self._isMaster = isMaster
+    @property
+    def is_master(self):
+        return self._is_master
 
-    def set_name(self, name=""):
-        if not self._name:
-            self._name = name
+    @is_master.setter
+    def is_master(self, value):
+        if not self._is_master:
+            self._is_master = value
 
-    def set_pyro_uri(self, pyro_uri=""):
-        if not self._pyro_uri:
-            self._pyro_uri = pyro_uri
-
-    def set_last_time_active(self, timestamp=-1):
-        self._last_time_active = timestamp
-
-    def get_is_master(self):
-        return self._isMaster
-
-    def get_name(self):
+    @property
+    def name(self):
         return self._name
 
-    def get_pyro_uri(self):
+    @name.setter
+    def name(self, value):
+        if value:
+            self._name = value
+
+    @property
+    def pyro_uri(self):
         return self._pyro_uri
 
-    def get_last_time_active(self):
+    @pyro_uri.setter
+    def pyro_uri(self, value):
+        if value:
+            self._pyro_uri = value
+
+    @property
+    def last_time_active(self):
         return self._last_time_active
+
+    @last_time_active.setter
+    def last_time_active(self, value):
+        if value:
+            self._last_time_active = value
 
 
 class EntryEncoder(JSONEncoder):

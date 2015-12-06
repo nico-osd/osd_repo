@@ -1,10 +1,9 @@
 #! /usr/bin/python3
 
-import json
 import random
 import time
 
-from util.listhandler import ListHandler, Entry, EntryEncoder
+from util.listhandler import ListHandler, Entry
 
 NETWORK = "10.20.0."
 
@@ -18,14 +17,14 @@ def main():
 
     # print as json
 
-    print(json.dumps(handler.get_dict(), sort_keys=True, indent=4, cls=EntryEncoder))
+    print(handler.to_json())
 
 
 def generate():
     handler = ListHandler()
     is_master_elected = False
 
-    for i in range(random.randrange(5, 10)):
+    for i in range(random.randrange(5, 15)):
         # constructing entry parameters with some randomness
         ip = NETWORK + str(random.randrange(1, 255))
 
@@ -44,11 +43,8 @@ def generate():
         # just a placeholder
         name = "ip_" + str(ip)
 
-        # executing this script has to be a pain.
-        time.sleep(random.randrange(0, 3))
-
         # set timestamp
-        timestamp = int(time.time())
+        timestamp = int(time.time()) - random.randrange(0, 1000)
 
         # creating entry
 

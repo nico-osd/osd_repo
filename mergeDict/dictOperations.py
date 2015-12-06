@@ -5,7 +5,7 @@
 import datetime
 import time
 
-from examples.comparison.main import generate
+from examples.comparison.listgenerator import generate
 
 # zuerst einmal nicht objektorinitiert
 # 2 listen generieren
