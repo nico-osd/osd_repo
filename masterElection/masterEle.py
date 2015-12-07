@@ -1,5 +1,3 @@
-
-from util.listhandler import Entry
 import copy
 import socket
 
@@ -29,6 +27,12 @@ class ME(object):
         temp_dict = copy.deepcopy(ipdict)
 
 # we thought about iterating over all entries to set all is_master-attributes to false, but this is not possible due to the current implementation of util.listhandler - Entry
+
+        # Nico:
+        # As soon an entry is created without explicitly passing the parameter is_master=True it is defaulted to is_master=False.
+        # As long as the creator of the record (ip, entry) does not explicitly set this parameter, it wont be set anywhere.
+
+
 #        for k, v in ipdict.items():
 #            ipdict.get(k).is_master = False
 

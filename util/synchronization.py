@@ -13,11 +13,11 @@ import threading
 def synchronized(method):
     def f(*args):
         self = args[0]
-        self.mutex.acquire();
+        self.mutex.acquire()
         try:
-            return method(args)
+            return method(*args)
         finally:
-            self.mutex.release();
+            self.mutex.release()
 
     return f
 
@@ -26,7 +26,7 @@ def synchronize(clazz, names=None):
     """Synchronize methods in the given class.
     Only synchronize the methods whose names are
     given, or all methods if names=None.
-    :param clazz The class which might be
+    :param clazz The class which needs synchronization
     :return: None
     """
     if isinstance(names, str):
@@ -34,7 +34,7 @@ def synchronize(clazz, names=None):
     for (name, val) in clazz.__dict__.items():
         if callable(val) and name is not '__init__' and \
                 (names is None or name in names):
-            clazz.__dict__[name] = synchronized(val)
+            setattr(clazz, name, synchronized(val))
 
 
 # You can create your own self.mutex, or inherit

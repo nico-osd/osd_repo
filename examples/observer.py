@@ -28,10 +28,7 @@ class ObservableInterface(metaclass=ABCMeta):
     def remove_observer(self, observer): pass
 
     @abstractmethod
-    def notify_observers(self): pass
-
-    @abstractmethod
-    def set_changed(self): pass
+    def notify_observers(self, arg): pass
 
     def set_changed(self): self._changed = True
 
@@ -49,8 +46,7 @@ class ObservableImplementation(ObservableInterface, Synchronization):
     """Observer pattern: Implementation class for Observable"""
 
     def __init__(self):
-        super().__init__(self)
-        Synchronization.__init__(self)
+        super().__init__()
         self._observers = []  # list of observers
 
     def add_observer(self, observer):
@@ -63,9 +59,10 @@ class ObservableImplementation(ObservableInterface, Synchronization):
         if observer in self._observers:
             self._observers.remove(observer)
 
-    def notify_observers(self, arg=None):
+    def notify_observers(self, arg):
+
         with self.mutex:
-            if not self.has_changed():
+            if self.has_changed():
                 return
 
             tmp_copy = self._observers.copy()
@@ -104,7 +101,6 @@ class Observer(ObserverInterface):
     def __init__(self, observed=''):
         super().__init__()
         self._observed = observed
-        print(self)
 
     def subscribe_observed(self, observed):
         observed.add_observer(self)
