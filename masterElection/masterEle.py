@@ -1,5 +1,7 @@
 
 from util.listhandler import Entry
+import copy
+import socket
 
 class ME(object):
     def __init__(self):
@@ -11,10 +13,32 @@ class ME(object):
         :param ipdict: the
         :return: the sorted list
         """
-
         key_ip_list = ipdict.keys()
-
         return key_ip_list
+
+    def min_value(self, key_ip_list):
+        """
+        shall select the min ip within the list
+        :param key_ip_list: (sorted) list of ip-addresses
+        :return: min ip
+        """
+        min_ip = min(key_ip_list)
+        return min_ip
+
+    def update_dict(self, ipdict, min_ip):
+        temp_dict = copy.deepcopy(ipdict)
+
+# we thought about iterating over all entries to set all is_master-attributes to false, but this is not possible due to the current implementation of util.listhandler - Entry
+#        for k, v in ipdict.items():
+#            ipdict.get(k).is_master = False
+
+        temp_dict.get(min_ip).is_master = True
+        return temp_dict
+
+    def am_I_master(self, ipdict):
+        hostname = socket.gethostname()
+        ip_address = socket.gethostbyname(hostname)
+        return ipdict.get(ip_address).is_master
 
 #    def sort_list(self, key_ip_list):
 #        """
@@ -25,22 +49,3 @@ class ME(object):
 #        key_ip_list.sort()
 #        return key_ip_list
 
-    def min_value(self, key_ip_list):
-        """
-        shall select the min ip within the list
-        :param key_ip_list: (sorted) list of ip-addresses
-        :return: min ip
-        """
-
-        min_ip = min(key_ip_list)
-
-        return min_ip
-
-    def update_dict_entry(self, ):
-        pass
-
-#class CallME:
-#    ME.min_value(x)
-
-#if __name__ == "__main__";
-#    CallME.min(x)
