@@ -52,6 +52,9 @@ def generate():
 
         # adding entry
 
+        print("ENTRY: ", end="")
+        print(entry)
+
         handler.add_or_override_entry(ip, entry)
 
         print("Generated Entry #{}".format(i))
