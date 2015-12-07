@@ -11,25 +11,33 @@ or listener of changes happening in the observed class.
 """
 from abc import ABCMeta, abstractmethod
 
+from util.synchronization import synchronize, Synchronization
+
 
 class ObservableInterface(metaclass=ABCMeta):
     """Observer pattern: Observable interface"""
 
-    @abstractmethod
     def __init__(self):
-        pass;
+        super().__init__()
+        self._changed = False  # Flag indicating changes
 
     @abstractmethod
-    def addObserver(self, observer):
-        pass;
+    def add_observer(self, observer): pass
 
     @abstractmethod
-    def removeObserver(self, observer):
-        pass;
+    def remove_observer(self, observer): pass
 
     @abstractmethod
-    def notifyObservers(self):
-        pass;
+    def notify_observers(self): pass
+
+    @abstractmethod
+    def set_changed(self): pass
+
+    def set_changed(self): self._changed = True
+
+    def clear_changed(self): self._changed = False
+
+    def has_changed(self): return self._changed
 
 
 # end class
@@ -37,30 +45,43 @@ class ObservableInterface(metaclass=ABCMeta):
 import random  # required to update _privateData
 
 
-class ObservableImplementation(ObservableInterface):
+class ObservableImplementation(ObservableInterface, Synchronization):
     """Observer pattern: Implementation class for Observable"""
 
-    _observers = []  # list of observers
-    _privateData = 1  # private data
-
     def __init__(self):
-        super().__init__()
-        _observers = []
+        super().__init__(self)
+        Synchronization.__init__(self)
+        self._observers = []  # list of observers
 
-    def addObserver(self, observer):
-        self._observers.append(observer)
+    def add_observer(self, observer):
+        if observer not in self._observers:
+            self._observers.append(observer)
+        # TODO: integrate Logger and remove this line
         print("registered observer %s", observer)
 
-    def removeObserver(self, observer):
-        self._observers.remove(observer)
+    def remove_observer(self, observer):
+        if observer in self._observers:
+            self._observers.remove(observer)
 
-    def notifyObservers(self):
-        for x in self._observers:
-            x.update(self._privateData)
+    def notify_observers(self, arg=None):
+        with self.mutex:
+            if not self.has_changed():
+                return
 
-    def updatePrivateData(self):
-        _privateData = random.randint(0, 10)
-        self.notifyObservers()
+            tmp_copy = self._observers.copy()
+
+            self.clear_changed()
+
+        for x in tmp_copy:
+            x.update(self, arg)
+
+    def update_private_data(self):
+        private_data = random.randint(0, 10)
+        self.notify_observers(private_data)
+
+
+synchronize(ObservableImplementation, "add_observer remove_observer notify_observers" +
+            "set_changed clear_changed has_changed")
 
 
 # end class
@@ -69,12 +90,8 @@ class ObserverInterface(metaclass=ABCMeta):
     """Observer pattern: Observer interface"""
 
     @abstractmethod
-    def __init__(self):
-        pass;
-
-    @abstractmethod
-    def update(self, data):
-        pass;
+    def update(self, observable, arg):
+        pass
 
 
 # end class
@@ -89,15 +106,15 @@ class Observer(ObserverInterface):
         self._observed = observed
         print(self)
 
-    def subscribeObserved(self, observed):
-        observed.addObserver(self)
+    def subscribe_observed(self, observed):
+        observed.add_observer(self)
 
-    def unsubscribeObserved(self, observed):
-        observed.removeObserver(self)
+    def unsubscribe_observed(self, observed):
+        observed.remove_observer(self)
 
-    def update(self, data):
+    def update(self, observable, arg):
         # TODO: implement update function
-        print("Me: ", self, " Data: ", data)
+        print("Me: ", self, " Data: ", arg)
 
 
 # end class
@@ -106,9 +123,9 @@ if __name__ == '__main__':
     subject = ObservableImplementation()
     obs1 = Observer()
     obs2 = Observer()
-    subject.addObserver(obs1)
-    subject.updatePrivateData()
-    subject.addObserver(obs2)
-    subject.updatePrivateData()
-    subject.removeObserver(obs1)
-    subject.updatePrivateData()
+    subject.add_observer(obs1)
+    subject.update_private_data()
+    subject.add_observer(obs2)
+    subject.update_private_data()
+    subject.remove_observer(obs1)
+    subject.update_private_data()
