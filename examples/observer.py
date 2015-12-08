@@ -112,7 +112,6 @@ class Observer(ObserverInterface):
 
     def update(self, observable, arg):
         # TODO: implement update function
-        # "Me: ", self, " Data: ", arg
         self.logger.debug("Me: %s Data: %s", self, arg)
 
 

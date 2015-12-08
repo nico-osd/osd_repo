@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 
 from copy import deepcopy, copy
-from json import JSONEncoder, dumps
+from json import JSONEncoder, dumps, JSONDecoder
 
 from util.synchronization import Synchronization, synchronize
 
@@ -20,8 +20,6 @@ class ListHandler(Synchronization):
         :param ip: the ip of the host
         :param entry: the entry for the host
         """
-        print(entry, ip)
-
         if isinstance(entry, Entry):
             self._dict[ip] = entry
         else:
@@ -54,8 +52,26 @@ class ListHandler(Synchronization):
         to_dump = self._dict.copy()
         return dumps(to_dump, sort_keys=True, indent=4, cls=EntryEncoder)
 
+    @staticmethod
+    def decode(json_str):
+        dct = JSONDecoder().decode(json_str)
+        # target format: { '10.20.0.123' : Entry(...), ... }
+        target = {}
+        for k in iter(dct):
+            target[k] = Entry.as_entry(dct[k])
+        return target
 
-synchronize(ListHandler, "add_or_override_entry rmv_entry get_entry to_json")
+    def __str__(self):
+        rtn = ''
+
+        cpy_dict = self._dict.copy()
+
+        for k in iter(cpy_dict):
+            rtn = (rtn + "{0}:\n {1}").format(k, str(cpy_dict[k]))
+        return rtn
+
+
+synchronize(ListHandler, "add_or_override_entry rmv_entry get_entry to_json decode")
 
 
 class Entry(object):
@@ -101,9 +117,15 @@ class Entry(object):
         if value:
             self._last_time_active = value
 
+    def __str__(self):
+        rtn = ''
+        for k in iter(self.__dict__):
+            rtn = (rtn + "\t[{0}]: {1}\n").format(k, self.__dict__[k])
+        return rtn
+
     @staticmethod
     def as_entry(dct):
-        pass
+        return Entry(dct['_is_master'], dct['_name'], dct['_pyro_uri'], dct['_last_time_active'])
 
 
 class EntryEncoder(JSONEncoder):
