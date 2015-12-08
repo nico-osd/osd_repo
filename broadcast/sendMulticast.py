@@ -4,7 +4,7 @@ import socket
 import struct
 import sys
 
-message = "very important data"
+message = "Hier koennte der Hostname stehen!"
 multicast_group = ("224.0.0.1", 10000)
 
 # Create the datagram socket
@@ -21,7 +21,7 @@ sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 
 try:
     # Send data to the multicast group
-    print("sending "+message)
+    print("sending " + message)
     sent = sock.sendto(message.encode("utf-8"), multicast_group)
 
     # Look for responses from all recipients
