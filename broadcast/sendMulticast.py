@@ -2,7 +2,6 @@
 
 import socket
 import struct
-import sys
 
 message = "Hier koennte der Hostname stehen!"
 multicast_group = ("224.0.0.1", 10000)
