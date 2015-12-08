@@ -11,6 +11,7 @@ or listener of changes happening in the observed class.
 """
 from abc import ABCMeta, abstractmethod
 
+from util.logger import get_logger
 from util.synchronization import synchronize, Synchronization
 
 
@@ -48,12 +49,12 @@ class ObservableImplementation(ObservableInterface, Synchronization):
     def __init__(self):
         super().__init__()
         self._observers = []  # list of observers
+        self.logger = get_logger(self.__class__.__name__)
 
     def add_observer(self, observer):
         if observer not in self._observers:
             self._observers.append(observer)
-        # TODO: integrate Logger and remove this line
-        print("registered observer %s", observer)
+        self.logger.debug("registered observer %s", observer)
 
     def remove_observer(self, observer):
         if observer in self._observers:
@@ -101,6 +102,7 @@ class Observer(ObserverInterface):
     def __init__(self, observed=''):
         super().__init__()
         self._observed = observed
+        self.logger = get_logger(self.__class__.__name__)
 
     def subscribe_observed(self, observed):
         observed.add_observer(self)
@@ -110,7 +112,8 @@ class Observer(ObserverInterface):
 
     def update(self, observable, arg):
         # TODO: implement update function
-        print("Me: ", self, " Data: ", arg)
+        # "Me: ", self, " Data: ", arg
+        self.logger.debug("Me: %s Data: %s", self, arg)
 
 
 # end class
