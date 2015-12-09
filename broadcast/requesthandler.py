@@ -23,4 +23,4 @@ class ThreadedUDPMulticastRequestHandler(socketserver.BaseRequestHandler):
         self.logger.info("sending acknowledgement to %s", str(address))
         sock.sendto(bytes("ack", "utf-8"), self.client_address)
 
-        self.callback(address, data)
+        self.callback(data)

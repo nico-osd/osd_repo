@@ -31,6 +31,12 @@ class MulticastSender(Thread):
 
         self.sock.sendto(bytes(self.to_send, "utf-8"), MULTICAST_GROUP)
 
+        # TODO: Is this really needed by anyone? Does it have to be a thread and waiting to receive acks?
+        # Isnt UDP about fire-and-forget? Do we really want to spawn multiple Threads of this one?
+        # I dont think that this functionality is required as long as we dont use it as
+        # an indicator. An indicator for the pi's which are still alive.
+        # Even we would use this functionality - who would profit from it?
+
         while self.runs():
             self.logger.info("waiting to receive")
             try:
