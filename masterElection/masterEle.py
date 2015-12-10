@@ -47,9 +47,12 @@ class ME(object):
         """
         shall select a master - this method should be invoked by BC!
         :param ipdict: the dictionary with ip-addresses and their entrys according to class util.Entry
-        :return: updated dictionary with selected master marked with is_master = true
+        :return: updated dictionary with selected master marked with is_master = true; returns original list if
+        less than 2 entries in input dictionary
         """
         maele = ME()
+        if len(ipdict) < 2:
+            return ipdict
         min_ip = maele.min_value(ipdict)
         return maele.update_dict(ipdict, min_ip)
 

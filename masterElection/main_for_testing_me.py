@@ -46,3 +46,10 @@ another_dict = masterselect.select_master(sec_dict)
 for k, v in another_dict.items():
     print(another_dict.get(k).is_master)
     print(another_dict.get(k).name)
+
+print("----------------------------------------")
+
+another_dict.pop("192.168.0.212")
+for k, v in another_dict.items():
+    print(another_dict.get(k).is_master)
+    print(another_dict.get(k).name)
