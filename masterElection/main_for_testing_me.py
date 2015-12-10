@@ -1,5 +1,5 @@
 #! /usr/bin/python3
-
+from masterElection.masterEle import ME
 from util.listhandler import *
 import copy
 import socket
@@ -37,3 +37,12 @@ print(a_dict.get('192.168.0.212').is_master)
 
 hostnamex = socket.gethostname()
 print(socket.gethostbyname(hostnamex))
+
+print("----------------------------------------")
+
+masterselect = ME()
+
+another_dict = masterselect.select_master(sec_dict)
+for k, v in another_dict.items():
+    print(another_dict.get(k).is_master)
+    print(another_dict.get(k).name)

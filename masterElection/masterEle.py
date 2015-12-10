@@ -42,7 +42,9 @@ class ME(object):
         return ipdict.get(ip_address).is_master
 
     def select_master(self, ipdict):
-        return ME.update_dict(self, ipdict, ME.min_value(ME.get_ips(ipdict)))
+        maele = ME()
+        min_ip = maele.min_value(maele.get_ips(ipdict))
+        return maele.update_dict(ipdict, min_ip)
 
     # sort list is irrelevant due to the fact that the raspi with the min ip will become master (and dict is unordered per default)
 #    def sort_list(self, key_ip_list):
