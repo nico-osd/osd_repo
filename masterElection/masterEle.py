@@ -26,15 +26,12 @@ class ME(object):
     def update_dict(self, ipdict, min_ip):
         temp_dict = copy.deepcopy(ipdict)
 
-# we thought about iterating over all entries to set all is_master-attributes to false, but this is not possible due to the current implementation of util.listhandler - Entry
-
+        # we thought about iterating over all entries to set all is_master-attributes to false, but
+        # this is not possible due to the current implementation of util.listhandler - Entry
+        # --> will not be implemented --> see Nico's comment
         # Nico:
         # As soon an entry is created without explicitly passing the parameter is_master=True it is defaulted to is_master=False.
         # As long as the creator of the record (ip, entry) does not explicitly set this parameter, it wont be set anywhere.
-
-
-#        for k, v in ipdict.items():
-#            ipdict.get(k).is_master = False
 
         temp_dict.get(min_ip).is_master = True
         return temp_dict
@@ -44,6 +41,10 @@ class ME(object):
         ip_address = socket.gethostbyname(hostname)
         return ipdict.get(ip_address).is_master
 
+    def select_master(self, ipdict):
+        return ME.update_dict(self, ipdict, ME.min_value(ME.get_ips(ipdict)))
+
+    # sort list is irrelevant due to the fact that the raspi with the min ip will become master (and dict is unordered per default)
 #    def sort_list(self, key_ip_list):
 #        """
 #        shall sort the given list according to the ip-address (ascending) and return the sorted list
