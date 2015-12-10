@@ -48,7 +48,7 @@ class ListHandler(Synchronization):
         shall return a copy of the keys of the held dict.
         :return: copy the keys held within the dict
         """
-        return copy(self._dict.keys())
+        return self._dict.keys()
 
     def to_json(self):
         to_dump = self._dict.copy()
