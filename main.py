@@ -1,12 +1,37 @@
 #! /usr/bin/python3
 import sys
+import time
 
 from broadcast.manager import UDPManager
+from examples.observer import ObserverInterface
 from util.config.logger import Log
 from util.config.statics import INTERFACE_NAME
 from util.listhandler import Entry
 from util.networking import get_ip_address
 from util.patterns.singletons import ListHandlerSingleton, UDPObservableSingleton
+
+
+class Observer(ObserverInterface):
+    """Observer pattern: Implementation class for Observer"""
+
+    # _observed = ''
+
+
+    def __init__(self, observed=''):
+        super().__init__()
+        self.list = []
+        # self._observed = observed
+
+    def subscribe_observed(self, observed):
+        observed.add_observer(self)
+
+    def unsubscribe_observed(self, observed):
+        observed.remove_observer(self)
+
+    def update(self, observable, arg):
+        self.list.append(arg)
+        # TODO: implement update function
+        Log.info(self, "Me: %s Data: %s", arg)
 
 
 def main(argv):
@@ -39,7 +64,13 @@ def main(argv):
 
     udp_manager.start()
 
-    input("Enter to Exit.")
+    observer = Observer()
+
+    observer.subscribe_observed(udp_observable_singleton.observable)
+
+    while True:
+        time.sleep(2)
+        logger.info("singleton: %s", observer.list)
 
     udp_manager.stop()
 

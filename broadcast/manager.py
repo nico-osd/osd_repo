@@ -14,14 +14,17 @@ from util.patterns.synchronization import Synchronization, synchronize
 
 class UDPManager(object):
     def __init__(self):
-        self.udp_server = UDPServer(MULTICAST_GROUP,
-                                    lambda *args, **keys: ThreadedUDPMulticastRequestHandler(
-                                        self.observable.update_received_list,
-                                        *args, **keys))
+        from util.patterns.singletons import UDPObservableSingleton
+
+        print(UDPObservableSingleton.instance.observable.update_received_list)
+
+        #        tcpserver = TCPServer((HOST, PORT), lambda *args, **keys: SingleTCPHandler(send_server_uri, srv_uri.asString(), *args, **keys))
+
+
+        self.udp_server = UDPServer(MULTICAST_GROUP, lambda *args, **keys: ThreadedUDPMulticastRequestHandler(
+            UDPObservableSingleton.instance.observable.update_received_list, *args, **keys))
 
         self._sending_thread = UDPSenderThread()
-
-        from util.patterns.singletons import UDPObservableSingleton
 
         UDPObservableSingleton.instance.observable.set_callback(self._sending_thread.expand_timeout)
 
@@ -53,11 +56,12 @@ class UDPUpdateObseravable(ObservableInterface, Synchronization):
         super().__init__()
         self.callback = callback
         self._observers = []  # list of observers
+        self.logger = Log.get_logger(self.__class__.__name__)
 
     def add_observer(self, observer):
         if observer not in self._observers:
             self._observers.append(observer)
-        Log.info(self, "registered observer %s", observer)
+        self.logger.info("registered observer %s", observer)
 
     def remove_observer(self, observer):
         if observer in self._observers:
@@ -79,7 +83,7 @@ class UDPUpdateObseravable(ObservableInterface, Synchronization):
         self.notify_observers(dct)
         if self.callback:
             self.callback()
-            Log.info(self, "Callback called %s", dct)
+            self.logger.info("Callback called %s", dct)
 
     def set_callback(self, value):
         self.callback = value
