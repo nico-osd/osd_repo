@@ -1,20 +1,31 @@
 #! /usr/bin/python3
+import sys
 
-
-from util.listhandler import ListHandler, Entry
-from util.logger import Log
+from broadcast.manager import UDPManager
+from util.config.logger import Log
+from util.config.statics import INTERFACE_NAME
+from util.listhandler import Entry
 from util.networking import get_ip_address
+from util.patterns.singletons import ListHandlerSingleton, UDPObservableSingleton
 
-INTERFACE_NAME = "wlan0"
 
+def main(argv):
+    interface_name = None
+    if len(argv) > 0:
+        interface_name = argv[0]
 
-def main():
-    singleton = Singleton()
+    list_handler_singleton = ListHandlerSingleton()
+    udp_observable_singleton = UDPObservableSingleton()
+
     logger = Log.get_logger("main")
 
     try:
-        # determine current ip-address of the interface wlan0
-        wlan_ip_addr = get_ip_address(INTERFACE_NAME)
+
+        if interface_name:
+            wlan_ip_addr = get_ip_address(interface_name)
+        else:
+            # determine current ip-address of the interface wlan0
+            wlan_ip_addr = get_ip_address(INTERFACE_NAME)
     except OSError:
         logger.error("Not connected to any network on adapter %s. Please check the connection of %s.", INTERFACE_NAME,
                      INTERFACE_NAME)
@@ -22,24 +33,16 @@ def main():
     logger.info("Selected network address: %s", wlan_ip_addr)
 
     # add own ip + empty Entry object to dict
-    singleton.handler.add_or_override_entry(wlan_ip_addr, Entry())
+    list_handler_singleton.handler.add_or_override_entry(wlan_ip_addr, Entry())
 
+    udp_manager = UDPManager()
 
-class Singleton(object):
-    class __Singleton(object):
-        def __init__(self):
-            self.handler = ListHandler()
+    udp_manager.start()
 
-    instance = None
+    input("Enter to Exit.")
 
-    def __new__(cls, *args, **kwargs):
-        if not Singleton.instance:
-            Singleton.instance = Singleton.__Singleton()
-        return Singleton.instance
-
-    def __getattr__(self, item):
-        return getattr(self.instance, item)
+    udp_manager.stop()
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

@@ -11,8 +11,8 @@ or listener of changes happening in the observed class.
 """
 from abc import ABCMeta, abstractmethod
 
-from util.logger import Log
-from util.synchronization import synchronize, Synchronization
+from util.config.logger import Log
+from util.patterns.synchronization import synchronize, Synchronization
 
 
 class ObservableInterface(metaclass=ABCMeta):

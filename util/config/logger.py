@@ -16,14 +16,23 @@ class Log(object):
     @staticmethod
     def debug(obj, *args):
         Log.get_logger(obj=obj)
-        logging.debug(args[0], *args)
+        if len(args) > 1:
+            logging.debug(args[0], *args)
+        else:
+            logging.debug(args[0])
 
     @staticmethod
     def warning(obj, *args):
         logger = Log.get_logger(obj=obj)
-        logger.warning(args[0], *args)
+        if len(args) > 1:
+            logger.warning(args[0], *args)
+        else:
+            logger.warning(args[0])
 
     @staticmethod
     def info(obj, *args):
         logger = Log.get_logger(obj=obj)
-        logger.info(args[0], *args)
+        if len(args) > 1:
+            logger.info(args[0], *args)
+        else:
+            logger.info(args[0])

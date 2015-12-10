@@ -3,7 +3,7 @@
 from copy import deepcopy, copy
 from json import JSONEncoder, dumps, JSONDecoder
 
-from util.synchronization import Synchronization, synchronize
+from util.patterns.synchronization import Synchronization, synchronize
 
 
 class ListHandler(Synchronization):
