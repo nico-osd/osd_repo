@@ -4,6 +4,9 @@ import copy
 import socket
 
 class ME(object):
+    # to use this class: it is necessary to import the class in your module and then you should invoke the method
+    # "select_master(ipdict)", which takes a dictionary with ip-addresses as keys (str) and values of type util.Entry
+
     def __init__(self):
         pass
 
