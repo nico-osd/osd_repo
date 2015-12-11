@@ -15,9 +15,16 @@ def main():
     """
     handler = generate()
 
-    # print as json
+    # print encoded as json
+    json_str = handler.to_json()
+    print(json_str)
 
-    print(handler.to_json())
+    # decode from json
+    dct = handler.decode(json_str)
+
+    for k in iter(dct):
+        print("{0}:".format(str(k)))
+        print(str(dct[k]))
 
 
 def generate():
@@ -52,13 +59,7 @@ def generate():
 
         # adding entry
 
-        print("ENTRY: ", end="")
-        print(entry)
-
         handler.add_or_override_entry(ip, entry)
-
-        print("Generated Entry #{}".format(i))
-
     return handler
 
 
