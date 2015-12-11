@@ -17,7 +17,7 @@ class Log(object):
     def debug(obj, *args):
         Log.get_logger(obj=obj)
         if len(args) > 1:
-            logging.debug(args[0], *args)
+            logging.debug(args[0], args[1:])
         else:
             logging.debug(args[0])
 
@@ -25,14 +25,23 @@ class Log(object):
     def warning(obj, *args):
         logger = Log.get_logger(obj=obj)
         if len(args) > 1:
-            logger.warning(args[0], *args)
+            logger.warning(args[0], args[1:])
         else:
             logger.warning(args[0])
+
 
     @staticmethod
     def info(obj, *args):
         logger = Log.get_logger(obj=obj)
         if len(args) > 1:
-            logger.info(args[0], *args)
+            logger.info(args[0], args[1:])
         else:
             logger.info(args[0])
+
+    @staticmethod
+    def error(obj, *args):
+        logger = Log.get_logger(obj=obj)
+        if len(args) > 1:
+            logger.error(args[0], args[1:])
+        else:
+            logger.error(args[0])

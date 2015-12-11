@@ -1,6 +1,5 @@
 #! /usr/bin/python3
 import sys
-import time
 
 from broadcast.manager import UDPManager
 from examples.observer import ObserverInterface
@@ -13,14 +12,9 @@ from util.patterns.singletons import ListHandlerSingleton, UDPObservableSingleto
 
 class Observer(ObserverInterface):
     """Observer pattern: Implementation class for Observer"""
-
-    # _observed = ''
-
-
     def __init__(self, observed=''):
         super().__init__()
         self.list = []
-        # self._observed = observed
 
     def subscribe_observed(self, observed):
         observed.add_observer(self)
@@ -31,7 +25,7 @@ class Observer(ObserverInterface):
     def update(self, observable, arg):
         self.list.append(arg)
         # TODO: implement update function
-        Log.info(self, "Me: %s Data: %s", arg)
+        Log.info(self, "Data: %s", str(arg))
 
 
 def main(argv):
@@ -60,7 +54,7 @@ def main(argv):
     # add own ip + empty Entry object to dict
     list_handler_singleton.handler.add_or_override_entry(wlan_ip_addr, Entry())
 
-    udp_manager = UDPManager()
+    udp_manager = UDPManager(wlan_ip_addr)
 
     udp_manager.start()
 
@@ -68,12 +62,9 @@ def main(argv):
 
     observer.subscribe_observed(udp_observable_singleton.observable)
 
-    while True:
-        time.sleep(2)
-        logger.info("singleton: %s", observer.list)
+    input("Enter to Exit.")
 
     udp_manager.stop()
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])

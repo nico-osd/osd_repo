@@ -1,5 +1,10 @@
 #! /usr/bin/python3
-from broadcast.manager import UDPUpdateObseravable
+
+"""
+In this module the singleton objects are defined.
+"""
+
+from broadcast.receiver.udp_observable import UDPUpdateObseravable
 from util.listhandler import ListHandler
 
 
