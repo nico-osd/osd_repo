@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 from util.config.logger import Log
-from util.patterns.observable import ObservableInterface
+from util.patterns.observer.observable import ObservableInterface
 from util.patterns.synchronization import Synchronization
 
 

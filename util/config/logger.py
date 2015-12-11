@@ -29,7 +29,6 @@ class Log(object):
         else:
             logger.warning(args[0])
 
-
     @staticmethod
     def info(obj, *args):
         logger = Log.get_logger(obj=obj)
