@@ -1,9 +1,10 @@
 #! /usr/bin/python3
 from util.config.logger import Log
 from util.patterns.observer.observer import ObserverInterface
+from util.patterns.singletons import ListHandlerSingleton
 
 
-class Observer(ObserverInterface):
+class MergeObserver(ObserverInterface):
     """Observer pattern: Implementation class for Observer"""
 
     def __init__(self, observed=''):
@@ -19,4 +20,8 @@ class Observer(ObserverInterface):
     def update(self, observable, arg):
         self.list.append(arg)
         # TODO: implement update function
+
+        listhandler = ListHandlerSingleton.instance
+        list = listhandler.handler.decode(str(arg))
         Log.info(self, "Data: %s", str(arg))
+        Log.info(self, "Interpreted: %s", str(list))

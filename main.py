@@ -2,7 +2,7 @@
 import sys
 
 from broadcast.manager import UDPManager
-from broadcast.receiver.udp_observer import Observer
+from mergeDict.merge_observer import MergeObserver
 from util.config.logger import Log
 from util.config.statics import INTERFACE_NAME
 from util.listhandler import Entry
@@ -40,7 +40,7 @@ def main(argv):
 
     udp_manager.start()
 
-    observer = Observer()
+    observer = MergeObserver()
 
     observer.subscribe_observed(udp_observable_singleton.observable)
 
