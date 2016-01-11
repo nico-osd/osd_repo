@@ -25,3 +25,26 @@ class MergeObserver(ObserverInterface):
         list = listhandler.handler.decode(str(arg))
         Log.info(self, "Data: %s", str(arg))
         Log.info(self, "Interpreted: %s", str(list))
+        self.merge(list)
+
+    def merge(self,remote_list):
+        print(remote_list)
+        listhandler_local = ListHandlerSingleton.instance.handler
+        remote_keylist = remote_list.keys()
+        local_keylist = listhandler_local.get_keys()
+        #nun ausdrucken
+        print(remote_keylist,local_keylist,sep="\n")
+
+        #remote_list mit local mergen, da es sich um ein dict handelt, sind die keys unique
+
+        listhandler_local.update(remote_list)
+
+        #ausdrucken
+
+        print(listhandler_local)
+
+        #lokale liste kopieren
+        list_local = listhandler_local.copy()
+
+
+
