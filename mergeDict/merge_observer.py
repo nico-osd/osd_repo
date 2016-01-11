@@ -30,7 +30,7 @@ class MergeObserver(ObserverInterface):
         self.merge(list)
 
     def merge(self,remote_list):
-        print(remote_list)
+        #print(remote_list)
         listhandler_local = ListHandlerSingleton.instance.handler
         remote_keylist = remote_list.keys()
         local_keylist = listhandler_local.get_keys()
@@ -42,10 +42,14 @@ class MergeObserver(ObserverInterface):
         for k,v in remote_list.items():
             print(k,v)
 
+        for k,v in listhandler_local.items():
+            print(k,v)
+
+
         print(listhandler_local)
         #print(remote_list)
 
-        #listhandler_local.update(remote_list)
+        listhandler_local.update(remote_list)
 
         #ausdrucken
 
