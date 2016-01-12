@@ -43,10 +43,13 @@ class MergeObserver(ObserverInterface):
         for k,v in remote_list.items():
             print(k,v)
 
-        print(remote_list)
+       # print(remote_list)
 
-        print(listhandler_local)
-        #print(remote_list)
+        #print(listhandler_local)
+
+        for k in local_keylist:
+            print(listhandler_local.get_entry(k))
+
 
         #listhandler_local.update(remote_list)
 
