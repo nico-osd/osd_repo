@@ -40,8 +40,6 @@ class MergeObserver(ObserverInterface):
 
         #remote_list mit local mergen, da es sich um ein dict handelt, sind die keys unique
 
-        for k,v in remote_list.items():
-            print(k,v)
 
        # print(remote_list)
 
@@ -50,8 +48,10 @@ class MergeObserver(ObserverInterface):
         for k in local_keylist:
             print(listhandler_local.get_entry(k))
 
+        for k,v in remote_list.items():
+           local_keylist.add_or_override_entry(k,v)
 
-        #listhandler_local.update(remote_list)
+        print(local_keylist)
 
         #ausdrucken
 
