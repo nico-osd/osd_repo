@@ -52,7 +52,7 @@ class MergeObserver(ObserverInterface):
         for k,v in remote_list.items():
             ts = time.time()
             listhandler_local.add_or_override_entry(k,v)
-            listhandler_local.add_or_override_entry(k,last_time_active=ts)
+            #listhandler_local.add_or_override_entry(k,last_time_active=ts)
 
         local_keys = listhandler_local.get_keys()
         print("sodala")
