@@ -49,9 +49,11 @@ class MergeObserver(ObserverInterface):
             print(listhandler_local.get_entry(k))
 
         for k,v in remote_list.items():
-           local_keylist.add_or_override_entry(k,v)
+           listhandler_local.add_or_override_entry(k,v)
 
-        print(local_keylist)
+        local_keys = listhandler_local.get_keys()
+        print("sodala")
+        print(local_keys)
 
         #ausdrucken
 
