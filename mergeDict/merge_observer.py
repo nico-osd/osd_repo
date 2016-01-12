@@ -2,7 +2,8 @@
 from util.config.logger import Log
 from util.patterns.observer.observer import ObserverInterface
 from util.patterns.singletons import ListHandlerSingleton
-
+import datetime
+import time
 
 class MergeObserver(ObserverInterface):
     """Observer pattern: Implementation class for Observer"""
@@ -49,18 +50,11 @@ class MergeObserver(ObserverInterface):
             print(listhandler_local.get_entry(k))
 
         for k,v in remote_list.items():
-           listhandler_local.add_or_override_entry(k,v)
+            ts = time.time()
+            listhandler_local.add_or_override_entry(k,v)
+            listhandler_local.add_or_override_entry(k,last_time_active=ts)
 
         local_keys = listhandler_local.get_keys()
         print("sodala")
         print(local_keys)
-
-        #ausdrucken
-
-        #print(listhandler_local)
-
-        #lokale liste kopieren
-        #list_local = listhandler_local.copy()
-
-
 
