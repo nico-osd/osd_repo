@@ -1,3 +1,7 @@
+# This university project is not maintained anymore !!!
+
+You may use, copy and distribute the code provided as defined within the LICENSE.md
+
 # osd_repo
 Das Ziel des Repositories ist die Zusammenarbeit an dem, in Python realisierten, Projekt der LV Open Source Development.
 
